@@ -1,0 +1,17 @@
+.orders-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.order-list {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-item {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+} 

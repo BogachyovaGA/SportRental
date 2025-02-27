@@ -1,45 +1,67 @@
 import React from 'react';
+// Импортируем компоненты для маршрутизации
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// Импорт компонентов страниц
-import HomePage from './pages/home/HomePage';
-import CatalogPage from './pages/catalog/CatalogPage';
-import ProductPage from './pages/product/ProductPage';
-import LoginPage from './pages/auth/login/LoginPage';
-import RegisterPage from './pages/auth/register/RegisterPage';
-import CartPage from './pages/cart/CartPage';
-import OrdersPage from './pages/orders/OrdersPage';
+// Импортируем компоненты публичных страниц
+import HomePage from './pages/home/HomePage';                    // Главная страница
+import CatalogPage from './pages/catalog/CatalogPage';          // Каталог товаров
+import ProductPage from './pages/product/ProductPage';          // Страница товара
+import LoginPage from './pages/auth/login/LoginPage';           // Страница входа
+import RegisterPage from './pages/auth/register/RegisterPage';  // Страница регистрации
+import CartPage from './pages/cart/CartPage';                   // Корзина
+import OrdersPage from './pages/orders/OrdersPage';             // Заказы пользователя
 
-// Импорт админских страниц
-import DashboardPage from './pages/admin/dashboard/DashboardPage';
-import ProductsManagementPage from './pages/admin/products/ProductsManagementPage';
-import CategoriesManagementPage from './pages/admin/categories/CategoriesManagementPage';
-import OrdersManagementPage from './pages/admin/orders/OrdersManagementPage';
+// Импортируем компоненты административной панели
+import DashboardPage from './pages/admin/dashboard/DashboardPage';                    // Панель управления
+import ProductsManagementPage from './pages/admin/products/ProductsManagementPage';   // Управление товарами
+import CategoriesManagementPage from './pages/admin/categories/CategoriesManagementPage'; // Управление категориями
+import OrdersManagementPage from './pages/admin/orders/OrdersManagementPage';        // Управление заказами
 
-// Защищенный маршрут для авторизованных пользователей
+// Добавьте импорт USER_MOCK и ADMIN_MOCK
+import { USER_MOCK, ADMIN_MOCK } from './mocks/apiMocks';
+
+/**
+ * Компонент для защиты маршрутов, требующих авторизации
+ */
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isAuthenticated = false; // Здесь будет проверка аутентификации
+  // Проверяем наличие токена в localStorage
+  const token = localStorage.getItem('token');
+  
+  // Если есть токен, считаем пользователя авторизованным
+  const isAuthenticated = !!token;
+  
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 
-// Защищенный маршрут для администраторов
+/**
+ * Компонент для защиты маршрутов администратора
+ */
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isAdmin = false; // Здесь будет проверка прав администратора
+  // Проверяем наличие токена в localStorage
+  const token = localStorage.getItem('token');
+  
+  // Проверяем, соответствует ли токен админскому
+  const isAdmin = token === ADMIN_MOCK.token;
+  
   return isAdmin ? <>{children}</> : <Navigate to="/" />;
 };
 
+/*
+Главный компонент приложения
+Содержит все маршруты и их защиту
+ */
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Публичные маршруты */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/catalog" element={<CatalogPage />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {/* Публичные маршруты (доступны всем) */}
+        <Route path="/" element={<HomePage />} />                    //Главная страница
+        <Route path="/catalog" element={<CatalogPage />} />         // Каталог
+        <Route path="/product/:id" element={<ProductPage />} />     // Страница товара с динамическим ID
+        <Route path="/login" element={<LoginPage />} />             // Страница входа
+        <Route path="/register" element={<RegisterPage />} />       // Страница регистрации
 
-        {/* Защищенные маршруты для авторизованных пользователей */}
+        {/* Защищенные маршруты (только для авторизованных пользователей) */}
         <Route
           path="/cart"
           element={
@@ -57,7 +79,7 @@ const App: React.FC = () => {
           }
         />
 
-        {/* Защищенные маршруты для администраторов */}
+        {/* Защищенные маршруты администратора */}
         <Route
           path="/admin"
           element={
@@ -91,7 +113,7 @@ const App: React.FC = () => {
           }
         />
 
-        {/* Маршрут для несуществующих страниц */}
+        {/* Маршрут по умолчанию - перенаправление на главную страницу */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
@@ -99,3 +121,10 @@ const App: React.FC = () => {
 };
 
 export default App;
+/*
+Использует React Router для маршрутизации
+Имеет компоненты защиты маршрутов (PrivateRoute и AdminRoute)
+Поддерживает динамические маршруты (например, /product/:id)
+Перенаправляет несуществующие маршруты на главную страницу
+Разделяет доступ по уровням авторизации
+*/

@@ -1,0 +1,15 @@
+.home-page {
+  min-height: 100vh;
+}
+
+.hero-section {
+  padding: 4rem 2rem;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.featured-products {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+} 
