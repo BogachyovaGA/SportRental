@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../../../services/authService';
+import { mockRegister } from '../../../services/mock/mockAuthService';
 import './RegisterPage.css';
 
 const RegisterPage: React.FC = () => {
@@ -20,7 +20,7 @@ const RegisterPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      await register(formData);
+      await mockRegister(formData);
       navigate('/');
     } catch (error) {
       setError('Ошибка при регистрации. Возможно, email уже используется.');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserOrders } from '../../services/orderService';
+import { mockGetUserOrders } from '../../services/mock/mockOrderService';
 import './OrdersPage.css';
 
 interface OrderItem {
@@ -35,7 +35,7 @@ const OrdersPage: React.FC = () => {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      const data = await getUserOrders();
+      const data = await mockGetUserOrders();
       setOrders(data);
     } catch (error) {
       setError('Ошибка при загрузке заказов');

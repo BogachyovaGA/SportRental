@@ -49,7 +49,7 @@ export const getOrderStats = async (dateRange?: {
   }
 };
 //отчет о доходах
-/*export const getRevenueReport = async (dateRange: {
+export const getRevenueReport = async (dateRange: {
   startDate: string;
   endDate: string;
 }) => {
@@ -73,4 +73,4 @@ export const getOrderStats = async (dateRange?: {
     console.error('Ошибка при получении отчета о доходах:', error);
     throw error;
   }
-}; */
+};

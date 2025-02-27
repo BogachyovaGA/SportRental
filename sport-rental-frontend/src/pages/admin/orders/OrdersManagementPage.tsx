@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  getAllOrders,
-  getOrderById,
-  updateOrderStatus,
-  updateOrderDates
-} from '../../../services/orderService';
-import { getDashboardStats } from '../../../services/adminService';
+  mockGetAllOrders,
+  mockGetOrderById,
+  mockUpdateOrderStatus,
+  mockUpdateOrderDates
+} from '../../../services/mock/mockOrderService';
+import { mockGetDashboardStats } from '../../../services/mock/mockAdminService';
 import './OrdersManagementPage.css';
 
 interface OrderItem {
@@ -63,7 +63,7 @@ const OrdersManagementPage: React.FC = () => {
         startDate: dateRange.startDate || undefined,
         endDate: dateRange.endDate || undefined
       };
-      const data = await getAllOrders(filters);
+      const data = await mockGetAllOrders(filters);
       setOrders(data);
     } catch (error) {
       setError('Ошибка при загрузке заказов');
@@ -74,7 +74,7 @@ const OrdersManagementPage: React.FC = () => {
 
   const loadStats = async () => {
     try {
-      const data = await getDashboardStats();
+      const data = await mockGetDashboardStats();
       setStats(data);
     } catch (error) {
       console.error('Ошибка при загрузке статистики');
@@ -83,7 +83,7 @@ const OrdersManagementPage: React.FC = () => {
 
   const handleStatusChange = async (orderId: number, newStatus: Order['status']) => {
     try {
-      await updateOrderStatus(orderId, newStatus);
+      await mockUpdateOrderStatus(orderId, newStatus);
       await loadOrders();
       await loadStats();
     } catch (error) {
@@ -93,7 +93,7 @@ const OrdersManagementPage: React.FC = () => {
 
   const handleDateChange = async (orderId: number, dates: { rentStart: string; rentEnd: string }) => {
     try {
-      await updateOrderDates(orderId, dates);
+      await mockUpdateOrderDates(orderId, dates);
       await loadOrders();
     } catch (error) {
       setError('Ошибка при обновлении дат');
@@ -102,7 +102,7 @@ const OrdersManagementPage: React.FC = () => {
 
   const handleViewDetails = async (orderId: number) => {
     try {
-      const orderDetails = await getOrderById(orderId);
+      const orderDetails = await mockGetOrderById(orderId);
       setSelectedOrder(orderDetails);
       setIsModalOpen(true);
     } catch (error) {

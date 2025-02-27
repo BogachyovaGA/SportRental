@@ -142,14 +142,31 @@ export const DASHBOARD_STATS_MOCK = {
     {
       id: 1,
       name: 'Горные лыжи Atomic',
-      rentCount: 25
+      rentCount: 25,
+      imageUrl: 'https://via.placeholder.com/100x100',
+      category: 'Лыжи'
     },
     {
       id: 2,
       name: 'Сноуборд Burton',
-      rentCount: 18
+      rentCount: 18,
+      imageUrl: 'https://via.placeholder.com/100x100',
+      category: 'Сноуборды'
+    },
+    {
+      id: 3,
+      name: 'Коньки фигурные',
+      rentCount: 15,
+      imageUrl: 'https://via.placeholder.com/100x100',
+      category: 'Коньки'
     }
-  ]
+  ],
+  ordersByStatus: {
+    pending: 30,
+    active: 45,
+    completed: 65,
+    cancelled: 10
+  }
 };
 
 // Мок данных для отчета о доходах

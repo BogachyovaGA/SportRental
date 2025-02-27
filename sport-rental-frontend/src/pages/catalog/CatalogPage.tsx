@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts } from '../../services/productService';
-import { getCategories } from '../../services/categoryService';
+import { mockGetProducts } from '../../services/mock/mockProductService';
+import { mockGetCategories } from '../../services/mock/mockCategoryService';
 import './CatalogPage.css';
 
 interface Product {
@@ -40,7 +40,7 @@ const CatalogPage: React.FC = () => {
 
   const loadCategories = async () => {
     try {
-      const data = await getCategories();
+      const data = await mockGetCategories();
       setCategories(data);
     } catch (error) {
       setError('Ошибка при загрузке категорий');
@@ -56,7 +56,7 @@ const CatalogPage: React.FC = () => {
         maxPrice: filters.maxPrice ? Number(filters.maxPrice) : undefined,
         available: filters.available
       };
-      const data = await getProducts(filterParams);
+      const data = await mockGetProducts(filterParams);
       setProducts(data);
     } catch (error) {
       setError('Ошибка при загрузке товаров');

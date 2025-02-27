@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCartItems, updateCartItem, removeFromCart, clearCart } from '../../services/cartService';
-import { createOrder } from '../../services/orderService';
+import { mockGetCartItems, mockUpdateCartItem, mockRemoveFromCart, mockClearCart } from '../../services/mock/mockCartService';
+import { mockCreateOrder } from '../../services/mock/mockOrderService';
 import './CartPage.css';
 
 interface CartItem {
@@ -32,7 +32,7 @@ const CartPage: React.FC = () => {
   const loadCartItems = async () => {
     try {
       setLoading(true);
-      const data = await getCartItems();
+      const data = await mockGetCartItems();
       setCartItems(data);
     } catch (error) {
       setError('Ошибка при загрузке корзины');
@@ -43,7 +43,7 @@ const CartPage: React.FC = () => {
 
   const handleUpdateDays = async (itemId: number, days: number) => {
     try {
-      await updateCartItem(itemId, days);
+      await mockUpdateCartItem(itemId, days);
       await loadCartItems(); // Перезагружаем корзину
     } catch (error) {
       setError('Ошибка при обновлении количества дней');
@@ -52,7 +52,7 @@ const CartPage: React.FC = () => {
 
   const handleRemoveItem = async (itemId: number) => {
     try {
-      await removeFromCart(itemId);
+      await mockRemoveFromCart(itemId);
       await loadCartItems();
     } catch (error) {
       setError('Ошибка при удалении товара');
@@ -61,7 +61,7 @@ const CartPage: React.FC = () => {
 
   const handleClearCart = async () => {
     try {
-      await clearCart();
+      await mockClearCart();
       setCartItems([]);
     } catch (error) {
       setError('Ошибка при очистке корзины');
@@ -90,8 +90,8 @@ const CartPage: React.FC = () => {
         }))
       };
 
-      await createOrder(orderData);
-      await clearCart();
+      await mockCreateOrder(orderData);
+      await mockClearCart();
       navigate('/orders');
     } catch (error) {
       setError('Ошибка при оформлении заказа');

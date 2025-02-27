@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory
-} from '../../../services/categoryService';
+  mockGetCategories,
+  mockCreateCategory,
+  mockUpdateCategory,
+  mockDeleteCategory
+} from '../../../services/mock/mockCategoryService';
 import './CategoriesManagementPage.css';
 
 interface Category {
@@ -34,7 +34,7 @@ const CategoriesManagementPage: React.FC = () => {
   const loadCategories = async () => {
     try {
       setLoading(true);
-      const data = await getCategories();
+      const data = await mockGetCategories();
       setCategories(data);
     } catch (error) {
       setError('Ошибка при загрузке категорий');
@@ -54,9 +54,9 @@ const CategoriesManagementPage: React.FC = () => {
       }
 
       if (editingCategory) {
-        await updateCategory(editingCategory.id, categoryData);
+        await mockUpdateCategory(editingCategory.id, categoryData);
       } else {
-        await createCategory(categoryData);
+        await mockCreateCategory(categoryData);
       }
 
       await loadCategories();
@@ -69,7 +69,7 @@ const CategoriesManagementPage: React.FC = () => {
   const handleDelete = async (categoryId: number) => {
     if (window.confirm('Вы уверены, что хотите удалить эту категорию?')) {
       try {
-        await deleteCategory(categoryId);
+        await mockDeleteCategory(categoryId);
         await loadCategories();
       } catch (error) {
         setError('Ошибка при удалении категории');

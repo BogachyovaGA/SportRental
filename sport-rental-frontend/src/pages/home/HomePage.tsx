@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../../services/categoryService';
-import { getProducts, searchProducts } from '../../services/productService';
+import { mockGetCategories } from '../../services/mock/mockCategoryService';
+import { mockGetProducts, mockSearchProducts } from '../../services/mock/mockProductService';
 import './HomePage.css';
 
 interface Category {
@@ -50,8 +50,8 @@ const HomePage: React.FC = () => {
     try {
       setLoading(true);
       const [categoriesData, productsData] = await Promise.all([
-        getCategories(),
-        getProducts({ available: true }) // Получаем только доступные товары
+        mockGetCategories(),
+        mockGetProducts({ available: true }) // Получаем только доступные товары
       ]);
       
       setCategories(categoriesData);
@@ -68,7 +68,7 @@ const HomePage: React.FC = () => {
     
     try {
       setIsSearching(true);
-      const results = await searchProducts(searchQuery);
+      const results = await mockSearchProducts(searchQuery);
       setSearchResults(results);
     } catch (error) {
       setError('Ошибка при поиске');

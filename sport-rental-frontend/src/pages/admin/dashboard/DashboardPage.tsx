@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  getDashboardStats,
-  getOrderStats,
-  getRevenueReport
-} from '../../../services/adminService';
-import { getAllOrders } from '../../../services/orderService';
+  mockGetDashboardStats,
+  mockGetOrderStats,
+  mockGetRevenueReport
+} from '../../../services/mock/mockAdminService';
+import { mockGetAllOrders } from '../../../services/mock/mockOrderService';
 import './DashboardPage.css';
 
 interface DashboardStats {
@@ -31,11 +31,34 @@ interface RevenueData {
   revenue: number;
 }
 
+interface OrderItem {
+  id: number;
+  productId: number;
+  days: number;
+  pricePerDay: number;
+  product: {
+    name: string;
+    image: string;
+  };
+}
+
+interface Order {
+  id: number;
+  userId: string;
+  userName: string;
+  items: OrderItem[];
+  status: string;
+  totalAmount: number;
+  rentStart: string;
+  rentEnd: string;
+  createdAt: string;
+}
+
 const DashboardPage: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [orderStats, setOrderStats] = useState<OrderStats | null>(null);
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
-  const [recentOrders, setRecentOrders] = useState([]);
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState({
@@ -55,9 +78,9 @@ const DashboardPage: React.FC = () => {
     try {
       setLoading(true);
       const [statsData, ordersStatsData, ordersData] = await Promise.all([
-        getDashboardStats(),
-        getOrderStats(),
-        getAllOrders() // Получаем последние 5 заказов
+        mockGetDashboardStats(),
+        mockGetOrderStats(),
+        mockGetAllOrders() // Получаем последние 5 заказов
       ]);
 
       setStats(statsData);
@@ -72,8 +95,11 @@ const DashboardPage: React.FC = () => {
 
   const loadRevenueData = async () => {
     try {
-      const data = await getRevenueReport(dateRange);
-      setRevenueData(data);
+      const data = await mockGetRevenueReport(dateRange);
+      setRevenueData(data.dailyRevenue.map(item => ({
+        date: item.date,
+        revenue: item.amount
+      })));
     } catch (error) {
       console.error('Ошибка при загрузке данных о выручке');
     }

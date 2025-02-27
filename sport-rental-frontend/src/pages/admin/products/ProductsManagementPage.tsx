@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  getProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct
-} from '../../../services/productService';
-import { getCategories } from '../../../services/categoryService';
+  mockGetProducts,
+  mockCreateProduct,
+  mockUpdateProduct,
+  mockDeleteProduct
+} from '../../../services/mock/mockProductService';
+import { mockGetCategories } from '../../../services/mock/mockCategoryService';
 import './ProductsManagementPage.css';
 
 interface Product {
@@ -46,7 +46,7 @@ const ProductsManagementPage: React.FC = () => {
 
   const loadProducts = async () => {
     try {
-      const data = await getProducts();
+      const data = await mockGetProducts();
       setProducts(data);
     } catch (error) {
       setError('Ошибка при загрузке товаров');
@@ -57,7 +57,7 @@ const ProductsManagementPage: React.FC = () => {
 
   const loadCategories = async () => {
     try {
-      const data = await getCategories();
+      const data = await mockGetCategories();
       setCategories(data);
     } catch (error) {
       setError('Ошибка при загрузке категорий');
@@ -75,9 +75,9 @@ const ProductsManagementPage: React.FC = () => {
       });
 
       if (editingProduct) {
-        await updateProduct(editingProduct.id, productData);
+        await mockUpdateProduct(editingProduct.id, productData);
       } else {
-        await createProduct(productData);
+        await mockCreateProduct(productData);
       }
 
       await loadProducts();
@@ -90,7 +90,7 @@ const ProductsManagementPage: React.FC = () => {
   const handleDelete = async (productId: number) => {
     if (window.confirm('Вы уверены, что хотите удалить этот товар?')) {
       try {
-        await deleteProduct(productId);
+        await mockDeleteProduct(productId);
         await loadProducts();
       } catch (error) {
         setError('Ошибка при удалении товара');

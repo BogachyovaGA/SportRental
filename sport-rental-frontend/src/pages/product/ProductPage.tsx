@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById } from '../../services/productService';
-import { addToCart } from '../../services/cartService';
+import { mockGetProductById } from '../../services/mock/mockProductService';
+import { mockAddToCart } from '../../services/mock/mockCartService';
 import './ProductPage.css';
 
 interface Product {
@@ -29,7 +29,7 @@ const ProductPage: React.FC = () => {
     try {
       setLoading(true);
       if (!id) throw new Error('ID товара не указан');
-      const data = await getProductById(Number(id));
+      const data = await mockGetProductById(Number(id));
       setProduct(data);
     } catch (error) {
       setError('Ошибка при загрузке товара');
@@ -41,7 +41,7 @@ const ProductPage: React.FC = () => {
   const handleAddToCart = async () => {
     try {
       if (!product) return;
-      await addToCart(product.id, rentDays);
+      await mockAddToCart(product.id, rentDays);
       navigate('/cart');
     } catch (error) {
       setError('Ошибка при добавлении в корзину');

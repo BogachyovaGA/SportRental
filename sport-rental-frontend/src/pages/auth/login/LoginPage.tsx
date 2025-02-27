@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../services/authService';
+import { mockLogin } from '../../../services/mock/mockAuthService';
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
@@ -17,10 +17,10 @@ const LoginPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await login(formData.email, formData.password);
+      const response = await mockLogin(formData.email, formData.password);
       
       // Проверяем роль пользователя для редиректа
-      if (response.user.role === 'admin') {
+      if (response.role === 'admin') {
         navigate('/admin/dashboard');
       } else {
         navigate('/');
