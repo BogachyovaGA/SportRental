@@ -112,7 +112,16 @@ export const ORDERS_MOCK = [
     totalAmount: 4500,
     rentStart: '2024-03-25',
     rentEnd: '2024-03-28',
-    createdAt: '2024-03-20'
+    createdAt: '2024-03-20',
+    customerInfo: {
+      firstName: 'Иван',
+      lastName: 'Иванов',
+      email: 'ivan@example.com',
+      phone: '+7 (999) 123-45-67',
+      address: 'ул. Ленина, 10, кв. 5',
+      city: 'Москва',
+      postalCode: '123456'
+    }
   },
   {
     id: 2,
@@ -129,7 +138,45 @@ export const ORDERS_MOCK = [
     totalAmount: 10000,
     rentStart: '2024-03-15',
     rentEnd: '2024-03-20',
-    createdAt: '2024-03-14'
+    createdAt: '2024-03-14',
+    customerInfo: {
+      firstName: 'Иван',
+      lastName: 'Иванов',
+      email: 'ivan@example.com',
+      phone: '+7 (999) 123-45-67'
+    }
+  },
+  {
+    id: 3,
+    userId: 1,
+    items: [
+      {
+        productId: 3,
+        days: 2,
+        price: 800,
+        total: 1600
+      },
+      {
+        productId: 1,
+        days: 2,
+        price: 1500,
+        total: 3000
+      }
+    ],
+    status: 'active',
+    totalAmount: 4600,
+    rentStart: '2024-04-01',
+    rentEnd: '2024-04-03',
+    createdAt: '2024-03-28',
+    customerInfo: {
+      firstName: 'Иван',
+      lastName: 'Иванов',
+      email: 'ivan@example.com',
+      phone: '+7 (999) 123-45-67',
+      address: 'ул. Пушкина, 15, кв. 42',
+      city: 'Санкт-Петербург',
+      postalCode: '198765'
+    }
   }
 ];
 

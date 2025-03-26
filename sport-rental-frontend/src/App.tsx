@@ -2,6 +2,9 @@ import React from 'react';
 // Импортируем компоненты для маршрутизации
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+// Импортируем общий компонент Header
+import Header from './components/Header/Header';
+
 // Импортируем компоненты публичных страниц
 import HomePage from './pages/home/HomePage';                    // Главная страница
 import CatalogPage from './pages/catalog/CatalogPage';          // Каталог товаров
@@ -10,6 +13,10 @@ import LoginPage from './pages/auth/login/LoginPage';           // Страни�
 import RegisterPage from './pages/auth/register/RegisterPage';  // Страница регистрации
 import CartPage from './pages/cart/CartPage';                   // Корзина
 import OrdersPage from './pages/orders/OrdersPage';             // Заказы пользователя
+import FeedbackPage from './pages/feedback/FeedbackPage';       // Страница отзывов
+import ContactsPage from './pages/contacts/ContactsPage';       // Страница контактов
+import ProfilePage from './pages/profile/ProfilePage';          // Страница профиля пользователя
+import CheckoutPage from './pages/checkout/CheckoutPage';       // Страница оформления заказа
 
 // Импортируем компоненты административной панели
 import DashboardPage from './pages/admin/dashboard/DashboardPage';                    // Панель управления
@@ -46,6 +53,16 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return isAdmin ? <>{children}</> : <Navigate to="/" />;
 };
 
+// Компонент-обертка для добавления хедера к страницам
+const WithHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
+};
+
 /*
 Главный компонент приложения
 Содержит все маршруты и их защиту
@@ -54,19 +71,45 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Публичные маршруты (доступны всем) */}
-        <Route path="/" element={<HomePage />} />                    //Главная страница
-        <Route path="/catalog" element={<CatalogPage />} />         // Каталог
-        <Route path="/product/:id" element={<ProductPage />} />     // Страница товара с динамическим ID
-        <Route path="/login" element={<LoginPage />} />             // Страница входа
-        <Route path="/register" element={<RegisterPage />} />       // Страница регистрации
+        {/* Публичные маршруты (доступны всем) с хедером */}
+        <Route path="/" element={<WithHeader><HomePage /></WithHeader>} />
+        <Route path="/catalog" element={<WithHeader><CatalogPage /></WithHeader>} />
+        <Route path="/product/:id" element={<WithHeader><ProductPage /></WithHeader>} />
+        <Route path="/feedback" element={<WithHeader><FeedbackPage /></WithHeader>} />
+        <Route path="/contacts" element={<WithHeader><ContactsPage /></WithHeader>} />
+        
+        {/* Страницы авторизации без хедера */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-        {/* Защищенные маршруты (только для авторизованных пользователей) */}
+        {/* Страница корзины доступна без авторизации */}
         <Route
           path="/cart"
           element={
-            <PrivateRoute>
+            <WithHeader>
               <CartPage />
+            </WithHeader>
+          }
+        />
+
+        {/* Защищенные маршруты (только для авторизованных пользователей) с хедером */}
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <WithHeader>
+                <ProfilePage />
+              </WithHeader>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <PrivateRoute>
+              <WithHeader>
+                <CheckoutPage />
+              </WithHeader>
             </PrivateRoute>
           }
         />
@@ -74,17 +117,21 @@ const App: React.FC = () => {
           path="/orders"
           element={
             <PrivateRoute>
-              <OrdersPage />
+              <WithHeader>
+                <OrdersPage />
+              </WithHeader>
             </PrivateRoute>
           }
         />
 
-        {/* Защищенные маршруты администратора */}
+        {/* Защищенные маршруты администратора с хедером */}
         <Route
           path="/admin"
           element={
             <AdminRoute>
-              <DashboardPage />
+              <WithHeader>
+                <DashboardPage />
+              </WithHeader>
             </AdminRoute>
           }
         />
@@ -92,7 +139,9 @@ const App: React.FC = () => {
           path="/admin/products"
           element={
             <AdminRoute>
-              <ProductsManagementPage />
+              <WithHeader>
+                <ProductsManagementPage />
+              </WithHeader>
             </AdminRoute>
           }
         />
@@ -100,7 +149,9 @@ const App: React.FC = () => {
           path="/admin/categories"
           element={
             <AdminRoute>
-              <CategoriesManagementPage />
+              <WithHeader>
+                <CategoriesManagementPage />
+              </WithHeader>
             </AdminRoute>
           }
         />
@@ -108,7 +159,9 @@ const App: React.FC = () => {
           path="/admin/orders"
           element={
             <AdminRoute>
-              <OrdersManagementPage />
+              <WithHeader>
+                <OrdersManagementPage />
+              </WithHeader>
             </AdminRoute>
           }
         />
